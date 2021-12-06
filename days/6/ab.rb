@@ -27,45 +27,16 @@ class Pool
         initial_timers.each do |timer|
             start_counts[timer] += 1
         end
-        @counts = {
-            zeros: start_counts[0],
-            ones: start_counts[1],
-            twos: start_counts[2],
-            threes: start_counts[3],
-            fours: start_counts[4],
-            fives: start_counts[5],
-            sixes: start_counts[6],
-            sevens: start_counts[7],
-            eights: start_counts[8]
-        }
+        @counts = start_counts
     end
 
     def step
-        @counts = {
-            zeros: @counts[:ones],
-            ones: @counts[:twos],
-            twos: @counts[:threes],
-            threes: @counts[:fours],
-            fours: @counts[:fives],
-            fives: @counts[:sixes],
-            sixes: @counts[:zeros] + @counts[:sevens],
-            sevens: @counts[:eights],
-            eights: @counts[:zeros]
-        }
+        @counts = @counts.rotate
+        @counts[6] += @counts[8]
     end
 
     def count
-        (
-            @counts[:zeros] +
-            @counts[:ones] +
-            @counts[:twos] +
-            @counts[:threes] +
-            @counts[:fours] +
-            @counts[:fives] +
-            @counts[:sixes] +
-            @counts[:sevens] +
-            @counts[:eights]
-        )
+        @counts.sum
     end
 end
 
