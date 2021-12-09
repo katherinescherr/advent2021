@@ -33,16 +33,16 @@ def adjacent_coords(grid, i, j)
     adjacent_coords
 end
 
-def testBasin(grid, set, x, y)
+def test_basin(grid, set, x, y)
     adjacent_coords(grid, x, y).each do |i,j|
         point = grid[i][j]
         if point < 9 && set.add?([i,j])
-            testBasin(grid, set, i, j)
+            test_basin(grid, set, i, j)
         end
     end
 end
 
-def getLowPoints(grid)
+def get_low_points(grid)
     low_points = []
     grid.each_with_index do |row, i|
         row.each_with_index do |point, j|
@@ -57,23 +57,23 @@ def getLowPoints(grid)
     low_points
 end
 
-def solveA(file)
+def solve_a(file)
     grid = parse_input(file)
     answer = 0
-    low_points = getLowPoints(grid)
+    low_points = get_low_points(grid)
     low_points.each do |coords|
         answer += grid[coords[0]][coords[1]] + 1
     end
     answer
 end
 
-def solveB(file)
+def solve_b(file)
     grid = parse_input(file)
-    low_points = getLowPoints(grid)
+    low_points = get_low_points(grid)
     basins = []
     low_points.each do |coords|
         set = Set.new([coords])
-        basin = testBasin(grid, set, coords[0], coords[1])
+        basin = test_basin(grid, set, coords[0], coords[1])
         basins << set.size       
     end
     top_3 = basins.max(3)
@@ -81,7 +81,7 @@ def solveB(file)
 end
 
 
-puts "TEST A: #{solveA('test.txt')}"
-puts "ANSWER A: #{solveA('input.txt')}"
-puts "TEST B: #{solveB('test.txt')}"
-puts "ANSWER B: #{solveB('input.txt')}"
+puts "TEST A: #{solve_a('test.txt')}"
+puts "ANSWER A: #{solve_a('input.txt')}"
+puts "TEST B: #{solve_b('test.txt')}"
+puts "ANSWER B: #{solve_b('input.txt')}"
