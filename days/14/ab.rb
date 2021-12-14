@@ -48,6 +48,12 @@ def solve(file, steps)
 
     char_counts = {}
 
+    # add first and last characters since they only are in 1 pair
+    char_counts[template.chars.first] = 1
+    char_counts[template.chars.last] ||= 0
+    char_counts[template.chars.last] += 1
+
+    # add character counts for each pair
     pairs.each do |pair, value|
         char_counts[pair.chars.first] ||= 0
         char_counts[pair.chars.first] += value
@@ -55,11 +61,8 @@ def solve(file, steps)
         char_counts[pair.chars.last] += value
     end
 
-    char_counts.each do |key, value|
-        char_counts[key] = (value / 2.0).ceil
-    end
-
-    char_counts.values.max - char_counts.values.min
+    # divide by two to get real count in string
+    (char_counts.values.max - char_counts.values.min) / 2
 end
 
 def solve_a(file)
